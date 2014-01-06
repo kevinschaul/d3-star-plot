@@ -23,14 +23,15 @@ body {
   fill: #333;
 }
 .star-axis {
-  stroke: #999;
+  stroke: #ccc;
   stroke-width: 2px;
+  stroke-dasharray: 4 5;
 }
 .star-path {
-  stroke: #333;
+  stroke: #444;
   stroke-width: 2px;
-  fill: #333;
-  fill-opacity: 0.2;
+  fill: #709CB1;
+  fill-opacity: 0.6;
 }
 
 </style>
@@ -41,14 +42,14 @@ body {
 <script>
 
 var margin = {
-  top: 22,
+  top: 32,
   right: 50,
   bottom: 20,
   left: 50
 };
 var width = 240 - margin.left - margin.right;
 var height = 240 - margin.top - margin.bottom;
-var labelMargin = 20;
+var labelMargin = 8;
 
 var scale = d3.scale.linear()
   .domain([0, 4])

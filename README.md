@@ -1,5 +1,7 @@
 # d3-star-plot
 
+![Star Plot](example/star-plot.png)
+
 `d3.starPlot()` is designed to be a
 [reusable](http://bost.ocks.org/mike/chart/) chart generator with sane
 defaults and the necessary customization options. It encourages familiar

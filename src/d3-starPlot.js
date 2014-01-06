@@ -44,7 +44,7 @@ d3.starPlot = function() {
     accessors.forEach(function(d, i) {
       var l, x, y;
 
-      l = scale(d(datum));
+      l = radius;
       x = l * Math.cos(r);
       y = l * Math.sin(r);
       g.append('line')
@@ -53,7 +53,6 @@ d3.starPlot = function() {
         .attr('y1', origin[1])
         .attr('x2', origin[0] + x)
         .attr('y2', origin[1] + y)
-        .style('stroke-dasharray', '2 ' + scale(10))
 
       r += radians;
     })
@@ -64,7 +63,7 @@ d3.starPlot = function() {
     accessors.forEach(function(d, i) {
       var l, x, y;
 
-      l = scale(d(datum));
+      l = radius;
       x = (l + labelMargin) * Math.cos(r);
       y = (l + labelMargin) * Math.sin(r);
       g.append('text')
