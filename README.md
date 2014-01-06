@@ -1,5 +1,28 @@
 # d3-star-plot
 
+`d3.starPlot()` is designed to be a
+[reusable](http://bost.ocks.org/mike/chart/) chart generator with sane
+defaults and the necessary customization options. It encourages familiar
+d3 design patterns to make building a series of star plots simple.
+
+    var star = d3.starPlot()
+      .accessors([
+        function(d) { return scale(d.Body); },
+        function(d) { return scale(d.Sweetness); },
+        function(d) { return scale(d.Smokey); }
+      ])
+      .labels([
+        'Body',
+        'Sweetness',
+        'Smokey'
+      ])
+
+    data.forEach(function(d) {
+      d3.select(body).append('svg')
+        .datum(d)
+        .call(star)
+    });
+
 ## Example
 
 [http://bl.ocks.org/kevinschaul/8213691](Old demo)
