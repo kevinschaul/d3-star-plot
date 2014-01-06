@@ -27,7 +27,7 @@ d3 design patterns to make building a series of star plots simple.
 
 ## Example
 
-[http://bl.ocks.org/kevinschaul/8213691](Old demo)
+[Live demo on bl.ocks.org](http://bl.ocks.org/kevinschaul/8213691)
 
 To run the included example locally:
 
