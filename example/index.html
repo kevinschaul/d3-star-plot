@@ -1,0 +1,118 @@
+<!DOCTYPE>
+<meta charset="utf-8">
+<style>
+
+body {
+  width: 960px;
+  margin: auto;
+  font-family: Arial;
+}
+#target {
+  margin: 40px 0;
+}
+.chart {
+  margin-bottom: 40px;
+}
+.star-title {
+  font-size: 14px;
+}
+.star-label {
+  font-size: 11px;
+}
+.star-origin {
+  fill: #333;
+}
+.star-axis {
+  stroke: #999;
+  stroke-width: 2px;
+}
+.star-path {
+  stroke: #333;
+  stroke-width: 2px;
+  fill: #333;
+  fill-opacity: 0.2;
+}
+
+</style>
+
+<body>
+<script src="../node_modules/d3/d3.min.js"></script>
+<script src="../src/d3-starPlot.js"></script>
+<script>
+
+var margin = {
+  top: 22,
+  right: 50,
+  bottom: 20,
+  left: 50
+};
+var width = 240 - margin.left - margin.right;
+var height = 240 - margin.top - margin.bottom;
+var labelMargin = 20;
+
+var scale = d3.scale.linear()
+  .domain([0, 4])
+  .range([0, 100])
+
+d3.csv('whiskies.csv')
+  .row(function(d) {
+      d.Body = +d.Body;
+      d.Sweetness = +d.Sweetness;
+      d.Smoky = +d.Smoky;
+      d.Medicinal = +d.Medicinal;
+      d.Tobacco = +d.Tobacco;
+      d.Honey = +d.Honey;
+      d.Spicy = +d.Spicy;
+      d.Winey = +d.Winey;
+      d.Nutty = +d.Nutty;
+      d.Malty = +d.Malty;
+      d.Fruity = +d.Fruity;
+      d.Floral = +d.Floral;
+      return d;
+  })
+  .get(function(error, rows) {
+    var star = d3.starPlot()
+      .width(width)
+      .accessors([
+        function(d) { return scale(d.Body); },
+        function(d) { return scale(d.Sweetness); },
+        function(d) { return scale(d.Smoky); },
+        function(d) { return scale(d.Honey); },
+        function(d) { return scale(d.Spicy); },
+        function(d) { return scale(d.Nutty); },
+        function(d) { return scale(d.Malty); },
+        function(d) { return scale(d.Fruity); },
+        function(d) { return scale(d.Floral); },
+      ])
+      .labels([
+        'Body',
+        'Sweetness',
+        'Smoky',
+        'Honey',
+        'Spicy',
+        'Nutty',
+        'Malty',
+        'Fruity',
+        'Floral',
+      ])
+      .title(function(d) { return d.Distillery; })
+      .margin(margin)
+      .labelMargin(labelMargin)
+
+    rows.forEach(function(d, i) {
+      star.includeLabels(i % 4 === 0 ? true : false);
+
+      d3.select('#target').append('svg')
+        .attr('class', 'chart')
+        .attr('width', width + margin.left + margin.right)
+        .attr('height', width + margin.top + margin.bottom)
+        .append('g')
+          .datum(d)
+          .call(star)
+    });
+  });
+
+</script>
+<div id='target'></div>
+</body>
+

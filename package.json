@@ -1,0 +1,28 @@
+{
+  "name": "d3-star-plot",
+  "version": "0.0.0",
+  "description": "A star plot reusuable chart generator for d3.js",
+  "keywords": [
+    "d3",
+    "visualization",
+    "chart",
+    "svg"
+  ],
+  "author": {
+    "name": "Kevin Schaul",
+    "url": "http://kevin.schaul.io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kevinschaul/d3-star-plot.git"
+  },
+  "dependencies": {
+    "grunt": "~0.4.1",
+    "d3": "~3.3.13"
+  },
+  "devDependencies": {
+    "grunt-contrib-connect": "~0.5.0",
+    "grunt-contrib-uglify": "~0.2.7",
+    "grunt-mocha-test": "~0.7.0"
+  }
+}
