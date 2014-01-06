@@ -8,7 +8,6 @@ d3.starPlot = function() {
       },
       labelMargin = 20,
       includeGuidelines = true,
-      // TODO Be smarter about `labels` so `includeLabels` isn't required.
       includeLabels = true,
       accessors = [],
       labels = [],
