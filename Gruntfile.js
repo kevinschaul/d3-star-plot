@@ -1,8 +1,12 @@
 'use strict';
 
 module.exports = function(grunt) {
+  var pkg = grunt.file.readJSON('package.json');
+  var distFile = 'dist/d3-star-plot-' + pkg.version + '.min.js';
+  var files = {};
+  files[distFile] = ['src/d3-starPlot.js'];
+
   grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
     connect: {
       server: {
         options: {
@@ -14,9 +18,7 @@ module.exports = function(grunt) {
     },
     uglify: {
       dist: {
-        files: {
-          'dist/d3-star-plot.min.js': ['src/d3-starPlot.js']
-        }
+        files: files
       }
     },
     mochaTest: {
