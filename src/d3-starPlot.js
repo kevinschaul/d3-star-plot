@@ -109,9 +109,45 @@ d3.starPlot = function() {
       .style('text-anchor', 'middle')
   }
 
+  function drawInteraction() {
+    var path = d3.svg.line.radial();
+
+    var r = Math.PI / 2;
+    accessors.forEach(function(d, i) {
+      var l, x, y;
+
+      l = radius;
+      x = l * Math.cos(r);
+      y = l * Math.sin(r);
+
+      var halfRadians = radians / 2;
+      var pathData = [
+        [0, r - halfRadians],
+        [l, r - halfRadians],
+        [l, r + halfRadians]
+      ];
+
+      g.append('path')
+        .datum(accessors[i](datum))
+        .attr('class', 'star-interaction')
+        .attr('transform', 'translate(' + origin[0] + ',' + origin[1] + ')')
+        .attr('d', path(pathData) + 'Z');
+
+      r += radians;
+    })
+  }
+
   function nop() {
     return;
   }
+
+  chart.interaction = function(selection) {
+    datum = selection.datum();
+    g = selection
+      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+
+    drawInteraction();
+  };
 
   chart.accessors = function(_) {
     if (!arguments.length) return accessors;

@@ -33,6 +33,10 @@ body {
   fill: #709CB1;
   fill-opacity: 0.6;
 }
+.star-interaction {
+  opacity: 0.2;
+  stroke: #000;
+}
 
 </style>
 
@@ -103,13 +107,20 @@ d3.csv('whiskies.csv')
     rows.forEach(function(d, i) {
       star.includeLabels(i % 4 === 0 ? true : false);
 
-      d3.select('#target').append('svg')
+      var svg = d3.select('#target').append('svg')
         .attr('class', 'chart')
         .attr('width', width + margin.left + margin.right)
         .attr('height', width + margin.top + margin.bottom)
-        .append('g')
-          .datum(d)
-          .call(star)
+
+      svg.append('g')
+        .datum(d)
+        .call(star)
+        .call(star.interaction)
+
+      svg.selectAll('.star-interaction')
+        .on('mouseover', function(d) {
+          console.log(d);
+        })
     });
   });
 
