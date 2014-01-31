@@ -78,16 +78,27 @@ d3.csv('whiskies.csv')
   .get(function(error, rows) {
     var star = d3.starPlot()
       .width(width)
-      .accessors([
-        function(d) { return scale(d.Body); },
-        function(d) { return scale(d.Sweetness); },
-        function(d) { return scale(d.Smoky); },
-        function(d) { return scale(d.Honey); },
-        function(d) { return scale(d.Spicy); },
-        function(d) { return scale(d.Nutty); },
-        function(d) { return scale(d.Malty); },
-        function(d) { return scale(d.Fruity); },
-        function(d) { return scale(d.Floral); },
+      .properties([
+        'Body',
+        'Sweetness',
+        'Smoky',
+        'Honey',
+        'Spicy',
+        'Nutty',
+        'Malty',
+        'Fruity',
+        'Floral'
+      ])
+      .scales([
+        scale,
+        scale,
+        scale,
+        scale,
+        scale,
+        scale,
+        scale,
+        scale,
+        scale
       ])
       .labels([
         'Body',
@@ -98,7 +109,7 @@ d3.csv('whiskies.csv')
         'Nutty',
         'Malty',
         'Fruity',
-        'Floral',
+        'Floral'
       ])
       .title(function(d) { return d.Distillery; })
       .margin(margin)

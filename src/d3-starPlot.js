@@ -9,7 +9,8 @@ d3.starPlot = function() {
       labelMargin = 20,
       includeGuidelines = true,
       includeLabels = true,
-      accessors = [],
+      properties = [],
+      scales = [],
       labels = [],
       title = nop,
 
@@ -17,7 +18,7 @@ d3.starPlot = function() {
       datum,
       radius = width / 2,
       origin = [radius, radius],
-      radii = accessors.length,
+      radii = properties.length,
       radians = 2 * Math.PI / radii,
       scale = d3.scale.linear()
         .domain([0, 100])
@@ -40,7 +41,7 @@ d3.starPlot = function() {
 
   function drawGuidelines() {
     var r = 0;
-    accessors.forEach(function(d, i) {
+    properties.forEach(function(d, i) {
       var l, x, y;
 
       l = radius;
@@ -59,7 +60,7 @@ d3.starPlot = function() {
 
   function drawLabels() {
     var r = 0;
-    accessors.forEach(function(d, i) {
+    properties.forEach(function(d, i) {
       var l, x, y;
 
       l = radius;
@@ -88,9 +89,9 @@ d3.starPlot = function() {
 
     var pathData = [];
     var r = Math.PI / 2;
-    accessors.forEach(function(d) {
+    properties.forEach(function(d, i) {
       pathData.push([
-        scale(d(datum)),
+        scale(scales[i](datum[d])),
         r
       ])
       r += radians;
@@ -113,7 +114,7 @@ d3.starPlot = function() {
     var path = d3.svg.line.radial();
 
     var r = Math.PI / 2;
-    accessors.forEach(function(d, i) {
+    properties.forEach(function(d, i) {
       var l, x, y;
 
       l = radius;
@@ -127,8 +128,11 @@ d3.starPlot = function() {
         [l, r + halfRadians]
       ];
 
+      var datumToBind = {};
+      datumToBind[properties[i]] = datum[properties[i]];
+
       g.append('path')
-        .datum(accessors[i](datum))
+        .datum(datumToBind)
         .attr('class', 'star-interaction')
         .attr('transform', 'translate(' + origin[0] + ',' + origin[1] + ')')
         .attr('d', path(pathData) + 'Z');
@@ -149,11 +153,17 @@ d3.starPlot = function() {
     drawInteraction();
   };
 
-  chart.accessors = function(_) {
-    if (!arguments.length) return accessors;
-    accessors = _;
-    radii = accessors.length;
+  chart.properties = function(_) {
+    if (!arguments.length) return properties;
+    properties = _;
+    radii = properties.length;
     radians = 2 * Math.PI / radii;
+    return chart;
+  };
+
+  chart.scales = function(_) {
+    if (!arguments.length) return scales;
+    scales = _;
     return chart;
   };
 
