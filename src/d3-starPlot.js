@@ -90,8 +90,9 @@ d3.starPlot = function() {
     var pathData = [];
     var r = Math.PI / 2;
     properties.forEach(function(d, i) {
+      var userScale = scales[i] || scales[0];
       pathData.push([
-        scale(scales[i](datum[d])),
+        scale(userScale(datum[d])),
         r
       ])
       r += radians;
@@ -163,7 +164,11 @@ d3.starPlot = function() {
 
   chart.scales = function(_) {
     if (!arguments.length) return scales;
-    scales = _;
+    if (Array.isArray(_)) {
+      scales = _;
+    } else {
+      scales = [_];
+    }
     return chart;
   };
 
