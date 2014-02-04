@@ -114,35 +114,44 @@ d3.starPlot = function() {
   function drawInteraction() {
     var path = d3.svg.line.radial();
 
-    // `*Extent` variables are used to build the interaction layer.
-    // `*Value` variables are used to compute (and return) the x,y
-    // positioning of the chart values.
-    var rExtent = Math.PI / 2;
-    var rValue = 0;
+    // `*Interaction` variables are used to build the interaction layer.
+    // `*Extent` variables are used to compute (and return) the x,y
+    // positioning of the attribute extents. `*Value` variables are used
+    // for the attribute values.
+    var rInteraction = Math.PI / 2;
+    var rExtent = 0;
     properties.forEach(function(d, i) {
+      var lInteraction, xInteraction, yInteraction;
       var lExtent, xExtent, yExtent;
-      var lValue, xValue, yValue;
 
-      lExtent = radius;
+      lInteraction = radius;
+      xInteraction = lInteraction * Math.cos(rInteraction);
+      yInteraction = lInteraction * Math.sin(rInteraction);
+
+      lExtent = radius + labelMargin;
       xExtent = lExtent * Math.cos(rExtent);
       yExtent = lExtent * Math.sin(rExtent);
 
-      lValue = radius;
-      xValue = lValue * Math.cos(rValue);
-      yValue = lValue * Math.sin(rValue);
+      var userScale = scales[i] || scales[0];
+      lValue = scale(userScale(datum[d]));
+      x = lValue * Math.cos(rExtent);
+      y = lValue * Math.sin(rExtent);
 
       var halfRadians = radians / 2;
       var pathData = [
-        [0, rExtent - halfRadians],
-        [lExtent, rExtent - halfRadians],
-        [lExtent, rExtent + halfRadians]
+        [0, rInteraction - halfRadians],
+        [lInteraction, rInteraction - halfRadians],
+        [lInteraction, rInteraction + halfRadians]
       ];
 
       var datumToBind = {
-        x: xValue,
-        y: yValue
+        xExtent: xExtent,
+        yExtent: yExtent,
+        x: x,
+        y: y,
+        key: properties[i],
+        value: datum[properties[i]]
       };
-      datumToBind[properties[i]] = datum[properties[i]];
 
       g.append('path')
         .datum(datumToBind)
@@ -150,8 +159,8 @@ d3.starPlot = function() {
         .attr('transform', chart.transform())
         .attr('d', path(pathData) + 'Z');
 
+      rInteraction += radians;
       rExtent += radians;
-      rValue += radians;
     })
   }
 

@@ -37,6 +37,20 @@ body {
   opacity: 0;
 }
 
+.interaction {
+  pointer-events: none;
+}
+.interaction circle {
+  fill: #444;
+  fill-opacity: 0.6;
+  stroke: #444;
+}
+.interaction text {
+  text-anchor: middle;
+  dominant-baseline: central;
+  font-size: 11px;
+}
+
 </style>
 
 <body>
@@ -117,18 +131,41 @@ d3.csv('whiskies.csv')
         .call(star)
         .call(star.interaction)
 
-      var circle = starG.append('circle')
+      var interaction = starG.append('g')
+        .attr('class', 'interaction')
         .attr('transform', star.transform())
-        .attr('cx', 0)
-        .attr('cy', 0)
+        .style('display', 'none');
+
+      var circle = interaction.append('circle')
         .attr('r', 5)
+
+      var label = interaction.append('text')
 
       svg.selectAll('.star-interaction')
         .on('mouseover', function(d) {
           console.log(d);
+
+          svg.selectAll('.star-label')
+            .style('display', 'none')
+
+          interaction
+            .style('display', 'block')
+
           circle
             .attr('cx', d.x)
             .attr('cy', d.y)
+
+          label
+            .attr('x', d.xExtent)
+            .attr('y', d.yExtent)
+            .text(d.key + ': ' + d.value);
+        })
+        .on('mouseout', function(d) {
+          interaction
+            .style('display', 'none')
+
+          svg.selectAll('.star-label')
+            .style('display', 'block')
         })
     });
   });
