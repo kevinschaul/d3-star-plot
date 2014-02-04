@@ -100,7 +100,7 @@ d3.starPlot = function() {
 
     g.append('path')
       .attr('class', 'star-path')
-      .attr('transform', 'translate(' + origin[0] + ',' + origin[1] + ')')
+      .attr('transform', chart.transform())
       .attr('d', path(pathData) + 'Z');
 
     g.append('text')
@@ -114,37 +114,54 @@ d3.starPlot = function() {
   function drawInteraction() {
     var path = d3.svg.line.radial();
 
-    var r = Math.PI / 2;
+    // `*Extent` variables are used to build the interaction layer.
+    // `*Value` variables are used to compute (and return) the x,y
+    // positioning of the chart values.
+    var rExtent = Math.PI / 2;
+    var rValue = 0;
     properties.forEach(function(d, i) {
-      var l, x, y;
+      var lExtent, xExtent, yExtent;
+      var lValue, xValue, yValue;
 
-      l = radius;
-      x = l * Math.cos(r);
-      y = l * Math.sin(r);
+      lExtent = radius;
+      xExtent = lExtent * Math.cos(rExtent);
+      yExtent = lExtent * Math.sin(rExtent);
+
+      lValue = radius;
+      xValue = lValue * Math.cos(rValue);
+      yValue = lValue * Math.sin(rValue);
 
       var halfRadians = radians / 2;
       var pathData = [
-        [0, r - halfRadians],
-        [l, r - halfRadians],
-        [l, r + halfRadians]
+        [0, rExtent - halfRadians],
+        [lExtent, rExtent - halfRadians],
+        [lExtent, rExtent + halfRadians]
       ];
 
-      var datumToBind = {};
+      var datumToBind = {
+        x: xValue,
+        y: yValue
+      };
       datumToBind[properties[i]] = datum[properties[i]];
 
       g.append('path')
         .datum(datumToBind)
         .attr('class', 'star-interaction')
-        .attr('transform', 'translate(' + origin[0] + ',' + origin[1] + ')')
+        .attr('transform', chart.transform())
         .attr('d', path(pathData) + 'Z');
 
-      r += radians;
+      rExtent += radians;
+      rValue += radians;
     })
   }
 
   function nop() {
     return;
   }
+
+  chart.transform = function() {
+    return 'translate(' + origin[0] + ',' + origin[1] + ')';
+  };
 
   chart.interaction = function(selection) {
     datum = selection.datum();

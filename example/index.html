@@ -112,14 +112,23 @@ d3.csv('whiskies.csv')
         .attr('width', width + margin.left + margin.right)
         .attr('height', width + margin.top + margin.bottom)
 
-      svg.append('g')
+      var starG = svg.append('g')
         .datum(d)
         .call(star)
         .call(star.interaction)
 
+      var circle = starG.append('circle')
+        .attr('transform', star.transform())
+        .attr('cx', 0)
+        .attr('cy', 0)
+        .attr('r', 5)
+
       svg.selectAll('.star-interaction')
         .on('mouseover', function(d) {
           console.log(d);
+          circle
+            .attr('cx', d.x)
+            .attr('cy', d.y)
         })
     });
   });
