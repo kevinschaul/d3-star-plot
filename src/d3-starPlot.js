@@ -144,6 +144,8 @@ d3.starPlot = function() {
         [lInteraction, rInteraction + halfRadians]
       ];
 
+      // TODO Return the x,y from the corner of the svg so that users can
+      // use div's or svg to handle interaction
       var datumToBind = {
         xExtent: xExtent,
         yExtent: yExtent,
