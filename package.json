@@ -1,6 +1,6 @@
 {
   "name": "d3-star-plot",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A star plot reusuable chart generator for d3.js",
   "keywords": [
     "d3",
