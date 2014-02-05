@@ -10,6 +10,10 @@ body {
 #target {
   margin: 40px 0;
 }
+.wrapper {
+  position: relative;
+  display: inline-block;
+}
 .chart {
   margin-bottom: 40px;
 }
@@ -18,6 +22,7 @@ body {
 }
 .star-label {
   font-size: 11px;
+  pointer-events: none;
 }
 .star-origin {
   fill: #333;
@@ -40,21 +45,22 @@ body {
 .interaction {
   pointer-events: none;
 }
-.interaction circle {
+.interaction.label {
+  position: absolute;
+  font-size: 11px;
+  text-shadow: 0 1px 0 #FFF, 0 -1px 0 #FFF, 1px 0 #FFF, -1px 0 #FFF;
+}
+.interaction.circle {
   fill: #444;
   fill-opacity: 0.6;
   stroke: #444;
-}
-.interaction text {
-  text-anchor: middle;
-  dominant-baseline: central;
-  font-size: 11px;
 }
 
 </style>
 
 <body>
 <script src="../node_modules/d3/d3.min.js"></script>
+<script src="../node_modules/jquery/dist/jquery.min.js"></script>
 <script src="../src/d3-starPlot.js"></script>
 <script>
 
@@ -121,7 +127,10 @@ d3.csv('whiskies.csv')
     rows.forEach(function(d, i) {
       star.includeLabels(i % 4 === 0 ? true : false);
 
-      var svg = d3.select('#target').append('svg')
+      var wrapper = d3.select('#target').append('div')
+        .attr('class', 'wrapper')
+
+      var svg = wrapper.append('svg')
         .attr('class', 'chart')
         .attr('width', width + margin.left + margin.right)
         .attr('height', width + margin.top + margin.bottom)
@@ -131,18 +140,18 @@ d3.csv('whiskies.csv')
         .call(star)
         .call(star.interaction)
 
-      var interaction = starG.append('g')
-        .attr('class', 'interaction')
-        .style('display', 'none');
+      var interactionLabel = wrapper.append('div')
+        .attr('class', 'interaction label')
 
-      var circle = interaction.append('circle')
+      var circle = svg.append('circle')
+        .attr('class', 'interaction circle')
         .attr('r', 5)
 
-      var label = interaction.append('text')
+      var interaction = wrapper.selectAll('.interaction')
+        .style('display', 'none');
 
       svg.selectAll('.star-interaction')
         .on('mouseover', function(d) {
-          console.log(d);
 
           svg.selectAll('.star-label')
             .style('display', 'none')
@@ -154,10 +163,11 @@ d3.csv('whiskies.csv')
             .attr('cx', d.x)
             .attr('cy', d.y)
 
-          label
-            .attr('x', d.xExtent)
-            .attr('y', d.yExtent)
-            .text(d.key + ': ' + d.value);
+          $interactionLabel = $(interactionLabel.node());
+          interactionLabel
+            .text(d.key + ': ' + d.value)
+            .style('left', d.xExtent - ($interactionLabel.width() / 2))
+            .style('top', d.yExtent - ($interactionLabel.height() / 2))
         })
         .on('mouseout', function(d) {
           interaction

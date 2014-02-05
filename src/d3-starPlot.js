@@ -129,13 +129,13 @@ d3.starPlot = function() {
       yInteraction = lInteraction * Math.sin(rInteraction);
 
       lExtent = radius + labelMargin;
-      xExtent = lExtent * Math.cos(rExtent) + origin[0];
-      yExtent = lExtent * Math.sin(rExtent) + origin[1];
+      xExtent = lExtent * Math.cos(rExtent) + origin[0] + margin.left;
+      yExtent = lExtent * Math.sin(rExtent) + origin[1] + margin.top;
 
       var userScale = scales[i] || scales[0];
       lValue = scale(userScale(datum[d]));
-      x = lValue * Math.cos(rExtent) + origin[0];
-      y = lValue * Math.sin(rExtent) + origin[1];
+      x = lValue * Math.cos(rExtent) + origin[0] + margin.left;
+      y = lValue * Math.sin(rExtent) + origin[1] + margin.top;
 
       var halfRadians = radians / 2;
       var pathData = [
@@ -144,8 +144,6 @@ d3.starPlot = function() {
         [lInteraction, rInteraction + halfRadians]
       ];
 
-      // TODO Return the x,y from the corner of the svg so that users can
-      // use div's or svg to handle interaction
       var datumToBind = {
         xExtent: xExtent,
         yExtent: yExtent,
