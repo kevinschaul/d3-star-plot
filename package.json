@@ -18,7 +18,8 @@
   },
   "dependencies": {
     "grunt": "~0.4.1",
-    "d3": "~3.3.13"
+    "d3": "~3.3.13",
+    "jquery": "~2.1.0"
   },
   "devDependencies": {
     "grunt-contrib-connect": "~0.5.0",
