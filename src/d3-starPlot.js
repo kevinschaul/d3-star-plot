@@ -168,11 +168,7 @@ d3.starPlot = function() {
     return;
   }
 
-  chart.interaction = function(selection) {
-    datum = selection.datum();
-    g = selection
-      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
-
+  chart.interaction = function() {
     drawInteraction();
   };
 

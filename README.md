@@ -8,11 +8,12 @@ defaults and the necessary customization options. It encourages familiar
 d3 design patterns to make building a series of star plots simple.
 
     var star = d3.starPlot()
-      .accessors([
-        function(d) { return scale(d.Body); },
-        function(d) { return scale(d.Sweetness); },
-        function(d) { return scale(d.Smokey); }
+      .properties([
+        'Body',
+        'Sweetness',
+        'Smokey'
       ])
+      .scales(scale);
       .labels([
         'Body',
         'Sweetness',
@@ -27,7 +28,7 @@ d3 design patterns to make building a series of star plots simple.
 
 ## Example
 
-[Live demo on bl.ocks.org](http://bl.ocks.org/kevinschaul/8213691)
+[Live demo on bl.ocks.org](http://bl.ocks.org/kevinschaul/8833989)
 
 To run the included example locally:
 
@@ -50,23 +51,52 @@ and the star plot path according to the associated data.
 
     var star = d3.starPlot();
 
-star.**accessors**([accessors])
+star.**properties**([properties])
 
-If `accessors` is specificed, sets the accessor functions for the
-specified star plot.  If `accessors` is not specificed, returns the
-current accessor functions. These must be set for the returned star plot
+If `properties` is specificed, sets the datum properties to use in the
+specified star plot.  If `properties` is not specificed, returns the
+current properties. These must be set for the returned star plot
 generator to produce a worthwhile chart.
 
-`accessors` must be an array of accessor functions for the star
-plot's associated data. The numbers should be scaled to fit in the
-range `[0, 100]`. The order of `accessors` determines the clockwise
-order of attributes to be drawn with the returned star plot generator.
+`properties` must be an array of String objects corresponding to
+properties of the datum. The order of `properties` determines the
+clockwise order of attributes to be drawn with the returned star plot
+generator.
 
-    star.accessors([
-      function(d) { return scale(d.Body); },
-      function(d) { return scale(d.Sweetness); },
-      function(d) { return scale(d.Smokey); }
+    star.properties([
+      'Body',
+      'Sweetness',
+      'Smokey'
     ]);
+
+star.**scales**([scales])
+
+If `scales` is specificed, sets the scale functions for the
+specified star plot.  If `scales` is not specificed, returns the
+current scale functions. `scales` must be set for the returned star plot
+generator to produce a worthwhile chart.
+
+`scales` must be either a single [d3.scale](https://github.com/mbostock/d3/wiki/Scales) function or an array of
+[d3.scale](https://github.com/mbostock/d3/wiki/Scales) functions for the star plot's associated data. It is used in
+conjunction with `properties` to compute the shape of the resulting star
+plot. Each scale in `scales` should give the `properties` data the range
+`[0, 100]`. If a single scale is specified, it will be used for all
+`properties`.  If an array of scales is specified, the order of `scales`
+should match the order of `properties`.
+
+    var scale = d3.scale.linear()
+      .domain([0, 4])
+      .range([0, 100])
+
+    // This ...
+    star.scales(scale);
+
+    // ... is equivalent to this
+    star.scales([
+      scale,
+      scale,
+      scale
+    ])
 
 star.**labels**([labels])
 
@@ -134,4 +164,37 @@ title accessor function. The value returned by this function is used by
 the returned star plot generator to label the chart.
 
     star.title(function(d) { return d.Distillery; });
+
+star.**interaction**()
+
+Returns an interaction generator to be used in conjunction with the star
+plot generator. The returned function will build an overlay useful for
+attaching interaction events to.
+
+![Star Plot](example/interaction.png)
+
+The image above shows the interaction overlay in gray. Each property is
+separated by a solid line. These triangles are useful for attaching
+mouse events to.
+
+An event attached to a generation of `interaction` will include the
+following properties:
+
+  - **key**: The property associated with that event
+  - **value**: The value associated with that event
+  - **x**: The x coordinate of the value on the star plot
+  - **y**: The y coordinate of the value on the star plot
+  - **xExtent**: The x coordinate of the maximum possible value on the star plot
+  - **yExtent**: The y coordinate of the maximum possible value on the star plot
+
+Note: These coordinates consider 0,0 to be the top, left space in the
+associated svg element.
+
+    svg.append('g')
+      .datum(d)
+      .call(star)
+      .call(star.interaction)
+
+The example included locally and the [live
+demo](http://bl.ocks.org/kevinschaul/8833989) both have a full example.
 
