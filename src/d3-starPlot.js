@@ -100,7 +100,7 @@ d3.starPlot = function() {
 
     g.append('path')
       .attr('class', 'star-path')
-      .attr('transform', chart.transform())
+      .attr('transform', 'translate(' + origin[0] + ',' + origin[1] + ')')
       .attr('d', path(pathData) + 'Z');
 
     g.append('text')
@@ -129,13 +129,13 @@ d3.starPlot = function() {
       yInteraction = lInteraction * Math.sin(rInteraction);
 
       lExtent = radius + labelMargin;
-      xExtent = lExtent * Math.cos(rExtent);
-      yExtent = lExtent * Math.sin(rExtent);
+      xExtent = lExtent * Math.cos(rExtent) + origin[0];
+      yExtent = lExtent * Math.sin(rExtent) + origin[1];
 
       var userScale = scales[i] || scales[0];
       lValue = scale(userScale(datum[d]));
-      x = lValue * Math.cos(rExtent);
-      y = lValue * Math.sin(rExtent);
+      x = lValue * Math.cos(rExtent) + origin[0];
+      y = lValue * Math.sin(rExtent) + origin[1];
 
       var halfRadians = radians / 2;
       var pathData = [
@@ -158,7 +158,7 @@ d3.starPlot = function() {
       g.append('path')
         .datum(datumToBind)
         .attr('class', 'star-interaction')
-        .attr('transform', chart.transform())
+        .attr('transform', 'translate(' + origin[0] + ',' + origin[1] + ')')
         .attr('d', path(pathData) + 'Z');
 
       rInteraction += radians;
@@ -169,10 +169,6 @@ d3.starPlot = function() {
   function nop() {
     return;
   }
-
-  chart.transform = function() {
-    return 'translate(' + origin[0] + ',' + origin[1] + ')';
-  };
 
   chart.interaction = function(selection) {
     datum = selection.datum();
