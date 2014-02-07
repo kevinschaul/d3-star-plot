@@ -164,7 +164,7 @@ d3.csv('whiskies.csv')
 
           $interactionLabel = $(interactionLabel.node());
           interactionLabel
-            .text(d.key + ': ' + d.value)
+            .text(d.key + ': ' + d.datum[d.key])
             .style('left', d.xExtent - ($interactionLabel.width() / 2))
             .style('top', d.yExtent - ($interactionLabel.height() / 2))
         })

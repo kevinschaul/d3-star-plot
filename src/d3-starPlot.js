@@ -150,7 +150,7 @@ d3.starPlot = function() {
         x: x,
         y: y,
         key: properties[i],
-        value: datum[properties[i]]
+        datum: datum
       };
 
       g.append('path')

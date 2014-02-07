@@ -39,7 +39,7 @@ Open [http://0.0.0.0:8000](http://0.0.0.0:8000) in your browser.
 
 ## Downloads
 
-- [d3-star-plot-0.0.1.min.js](https://raw.github.com/kevinschaul/d3-star-plot/master/dist/d3-star-plot-0.0.1.min.js)
+- [d3-star-plot-0.0.2.min.js](https://raw.github.com/kevinschaul/d3-star-plot/master/dist/d3-star-plot-0.0.2.min.js)
 
 ## API
 
@@ -180,8 +180,9 @@ mouse events to.
 An event attached to a generation of `interaction` will include the
 following properties:
 
-  - **key**: The property associated with that event
-  - **value**: The value associated with that event
+  - **key**: The property associated with this event
+  - **datum**: The datum associated with the star plot. This can be
+    combined with `key` to find the datum value associated with this event.
   - **x**: The x coordinate of the value on the star plot
   - **y**: The y coordinate of the value on the star plot
   - **xExtent**: The x coordinate of the maximum possible value on the star plot
