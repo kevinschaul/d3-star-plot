@@ -12,6 +12,7 @@
     "name": "Kevin Schaul",
     "url": "http://kevin.schaul.io"
   },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/kevinschaul/d3-star-plot.git"
