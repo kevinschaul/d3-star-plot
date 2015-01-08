@@ -11,7 +11,7 @@ d3.starPlot = function() {
       includeLabels = true,
       properties = [],
       scales = [],
-      labels = [],
+      labels = nop,
       title = nop,
 
       g,
@@ -32,11 +32,12 @@ d3.starPlot = function() {
     if (includeGuidelines) {
       drawGuidelines();
     }
+
+    drawChart();
+
     if (includeLabels) {
       drawLabels();
     }
-
-    drawChart();
   }
 
   function drawGuidelines() {
@@ -70,7 +71,7 @@ d3.starPlot = function() {
         .attr('class', 'star-label')
         .attr('x', origin[0] + x)
         .attr('y', origin[1] + y)
-        .text(labels[i])
+        .text(typeof labels == "function" ? labels(datum, i) : labels[i])
         .style('text-anchor', 'middle')
         .style('dominant-baseline', 'central')
 
