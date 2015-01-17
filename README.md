@@ -104,14 +104,16 @@ If `labels` is specificed, sets the attriute labels for the
 specified star plot.  If `labels` is not specificed, returns the
 current labels. This value is optional.
 
-`labels` must be an array of strings in the order that the corresponding
-accessor functions are in.
+`labels` can be either an array of strings or a function returning
+strings in the order that the corresponding accessor functions are in.
 
     star.labels([
       'Body',
       'Sweetness',
       'Smokey'
     ]);
+
+    star.labels(function(d, i) { return 'property ' + i; });
 
 star.**labelMargin**([m])
 
