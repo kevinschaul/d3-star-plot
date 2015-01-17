@@ -39,7 +39,7 @@ Open [http://0.0.0.0:8000](http://0.0.0.0:8000) in your browser.
 
 ## Downloads
 
-- [d3-star-plot-0.0.2.min.js](https://raw.github.com/kevinschaul/d3-star-plot/master/dist/d3-star-plot-0.0.2.min.js)
+- [d3-star-plot-0.0.3.min.js](https://raw.github.com/kevinschaul/d3-star-plot/master/dist/d3-star-plot-0.0.3.min.js)
 
 ## API
 
